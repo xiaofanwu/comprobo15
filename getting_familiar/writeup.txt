@@ -1,0 +1,14 @@
+How might rosbag fit into a debugging process as you work on projects in this class?
+	If you can see the messages going back and forth, you don't need the robot to actually move. You can debug without the robot. 
+Are there any obvious shortcomings of rosbag as a debugging tool?
+	It's less visual, and perhaps therefore harder to catch mistakes and understand the exact motion.
+
+Does the new behavior (changing coordinates from odom to base_frame) make sense?
+	Yes, this makes sense, because when you're looking at the odom frame you see the robot moving and the odom staying the same. When you switch to base_frame, the robot is stationary and the odom frame moves around it. 
+
+What happens when you run this code?  What assumption can you safely make about any code that you put in a sensor callback?  In what ways might the behavior you observe be suboptimal when programming a robot?
+	This code makes the robot wait ten seconds before printing. You can assume that any code put in a callback won't happen until it receives the message from the subscriber. We can't think of any situations where callbacks would hinder the programming process
+
+
+What happens now?  In what scenarios is this behavior good?  In what scenarios is this behavior bad?
+	You don't lose any data, but there's a lag with the queue. This is good if you want to see every packet or message, but it's bad when you need things in real time. 
