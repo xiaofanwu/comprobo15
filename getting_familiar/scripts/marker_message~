@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-#import everything we need 
+""" This script explores publishing ROS messages in ROS using Python """
 
 from visualization_msgs.msg import Marker
 from std_msgs.msg import ColorRGBA
@@ -8,20 +8,22 @@ from geometry_msgs.msg import Vector3, Pose, Point
 import rospy
 
 rospy.init_node('marker_message')
-#define the position, color, size of the marker
+
 pose = Pose(position=Point(x=0,y=1))
 color = ColorRGBA(r=1, a=1)
 scale = Vector3(x=.1,y=.1,z=.1)
-#create the marker and put it in base_link frame
 marker = Marker(pose=pose, color=color, scale = scale, type =2)
 marker.header.frame_id = "base_link"
 
+# def handle_listener (msg):
+# 	new_y = msg.pose.position.y +1
+# 	print new_y
+	# pose = Pose(position=Point(x=1,y=new_y))
 
 pub = rospy.Publisher("/my_marker", Marker, queue_size=10)
 
 r=rospy.Rate(10)
 
 while not rospy.is_shutdown(): 
-#publish the marker
 	pub.publish(marker)
 	r.sleep()
