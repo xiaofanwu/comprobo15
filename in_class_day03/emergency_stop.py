@@ -3,13 +3,13 @@
 import rospy
 from geometry_msgs.msg import Twist
 import neato_node.Bump
-
+global stop
+stop=True
 
 
 def bump_event_callback(msg):
 
 	if msg.frontLeft==1 or msg.frontRight==1:
-		global stop
 		stop=True
 
 		
@@ -36,7 +36,7 @@ if __name__ == "__main__":
 	#create a function that moves the robot forward
 	r=rospy.Rate(5)
 
-	self.bump_subscriber = rospy.Subscriber('bump',"neato_node/Bump", bump_event_callback)
+	bump_subscriber = rospy.Subscriber('bump',"neato_node/Bump", bump_event_callback)
 	pub = rospy.Publisher('cmd_vel', Twist)
 
 	while not rospy.is_shutdown(): 

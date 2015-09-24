@@ -1,0 +1,36 @@
+Which  behaviors did you implement?
+
+We implemented the behaviors wall following, obstacle avoidance, and person following. For our finite state machine we combined wall following and person following.
+
+For each behavior, what strategy did you use to implement the behavior? 
+For wall following we used the lidar to scaned two sets of angles on either side of 270. We found the difference of the ranges, and set this as our angular velocity. The robot also had a set linear velocity, which did not change.
+
+For obstacle avoidance we used the lidar to scan 50 degrees in front of the robot. If the robot did not detect any obstacle it moved forward. If it did detect something it turned until it could no long detect an obstacle, and then it proceeded forward.
+
+For person follow we detected an object in front using the lidar, and then we averaged the angles that detected an object to find the center of mass. We turned the robot proportionally to this average angle, so the robot is always pointing at the obstacle. We also included a proportional controller that kept the robot a distance of 1 meter away from the person at all times.
+
+
+
+For the finite state controller, what were the states?  What did the robot do in each state?  How did you combine and how did you detect when to transition between behaviors?
+
+For the finite state controller the two states were wall following and person following. The default state was wall following. It was in this state if it did not detect an object directly in front of it. When the lidar detected an object at 0 degrees in front of it, it switched to person following and continued to do so until it did not detect something directly in front of it. Then it reverted back to its default state: wall following. 
+
+
+How did you structure your code?
+
+We used object oriented programming to structure our code. We have a subscriber that records data in its callback. That data is then used in the run loop, which affects twists which the publisher then publishes causing the robot to move according to its input data. 
+
+
+What if any challenges did you face along the way?
+
+We faced multiple challenges. First off, we had difficulty with the wall following and the person following because we attempted to make the code too complex initially. Once we scaled down the code, we found a number of tricky bugs. The most difficult to catch, was properly initiallizing a list to record angles in wall following. We kept appending the list and never cleared it, so the old data was interfering with the robots actions. Once we got over these hurdles, and learned more about debugging, the rest of the project went smoothly.
+
+
+What would you do to improve your project if you had more time?
+
+We would make the code more robust if we had more time. We would add to the wall follower so it could follow walls in both directions and turn corners. We would also make obstacle avoidance more complex, and allow the robot to avoid obstacles while moving faster. Person following worked but was finicky. 
+
+
+Did you learn any interesting lessons for future robotic programming projects?
+
+We learned to scale down the first attempt at any program, and to debug early and often. We found debuging was easier if we did not publish any velocity and just looked at sensor data. 
