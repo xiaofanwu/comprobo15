@@ -163,12 +163,15 @@ class SensorModel(object):
             return 1.0
 
         closest = self.world_model.get_closest_wall(position, direction)
+        #there is nothing there and observation is 0/ 
         if closest == None and observation == 0.0:
             # probability of a false positive is 0
             return 1.0
+    
         elif closest != None and observation == 0.0:
             # probability of missing an obstacle is 0
             return 0.0
+            #
         elif closest == None and observation != 0.0:
             #probability of  false positive is 0
             return 0.0

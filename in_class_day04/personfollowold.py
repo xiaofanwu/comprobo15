@@ -24,7 +24,7 @@ class personfollowfinal:
         self.infront=[]
         #detect if there is anything infront of the robot with in two meter, if there is
         #add the angles the robot detects in a list
-        for i in range(-45,45):
+        for i in range(-30,30):
             if msg.ranges[i] != 0 and msg.ranges[i]<2:
                 self.infront.append(i)
         #calculate the angle that the object is at. The robot will only move if something is 
@@ -51,7 +51,7 @@ class personfollowfinal:
             print "the object is at " +str(self.targetangle)
             
             self.twist.angular.z=self.targetangle*.5
-            
+            self.twist.linear.x=.1
             # self.twist.linear.x=.5
             
             self.pub.publish(self.twist)
