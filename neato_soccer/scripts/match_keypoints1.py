@@ -43,64 +43,65 @@ class KeyPointMatcherDemo(object):
 		matches = self.matcher.knnMatch(des1,des2,k=2)
  #find the good matches 
 		good_matches = []
-
-		
 		for m,n in matches:
 			# make sure the distance to the closest match is sufficiently better than the second closest
 			if (m.distance < self.ratio_threshold*n.distance and
 				kp1[m.queryIdx].response > self.corner_threshold and
 				kp2[m.trainIdx].response > self.corner_threshold):
 				good_matches.append((m.queryIdx, m.trainIdx))
+		print len(good_matches)>40
+
 		#print good_matches
 
 		#creates empty list of 0s
 
-		pts1 = np.zeros((len(good_matches),2))
-		pts2 = np.zeros((len(good_matches),2))
+		# pts1 = np.zeros((len(good_matches),2))
+		# pts2 = np.zeros((len(good_matches),2))
 
-		for idx in range(len(good_matches)):
-			match = good_matches[idx]
-			pts1[idx,:] = kp1[match[0]].pt
-			pts2[idx,:] = kp2[match[1]].pt
+		# for idx in range(len(good_matches)):
+		# 	match = good_matches[idx]
+		# 	pts1[idx,:] = kp1[match[0]].pt
+		# 	pts2[idx,:] = kp2[match[1]].pt
 
-		self.im = np.array(np.hstack((im1,im2)))
+		# self.im = np.array(np.hstack((im1,im2)))
 
-		# plot the points
-		for i in range(pts1.shape[0]):
-			cv2.circle(self.im,(int(pts1[i,0]),int(pts1[i,1])),2,(255,0,0),2)
-			cv2.circle(self.im,(int(pts2[i,0]+im1.shape[1]),int(pts2[i,1])),2,(255,0,0),2)
-			cv2.line(self.im,(int(pts1[i,0]),int(pts1[i,1])),(int(pts2[i,0]+im1.shape[1]),int(pts2[i,1])),(0,255,0))
+		# # plot the points
+		# for i in range(pts1.shape[0]):
+		# 	cv2.circle(self.im,(int(pts1[i,0]),int(pts1[i,1])),2,(255,0,0),2)
+		# 	cv2.circle(self.im,(int(pts2[i,0]+im1.shape[1]),int(pts2[i,1])),2,(255,0,0),2)
+		# 	cv2.line(self.im,(int(pts1[i,0]),int(pts1[i,1])),(int(pts2[i,0]+im1.shape[1]),int(pts2[i,1])),(0,255,0))
 
-def set_corner_threshold(thresh):
-	""" Sets the threshold to consider an interest point a corner.  The higher the value
-		the more the point must look like a corner to be considered """
-	global matcher
-	matcher.corner_threshold = thresh/1000.0
+# def set_corner_threshold(thresh):
+# 	""" Sets the threshold to consider an interest point a corner.  The higher the value
+# 		the more the point must look like a corner to be considered """
+# 	global matcher
+# 	matcher.corner_threshold = thresh/1000.0
 
-def set_ratio_threshold(ratio):
-	""" Sets the ratio of the nearest to the second nearest neighbor to consider the match a good one """
-	global matcher
-	matcher.ratio_threshold = ratio/100.0
+# def set_ratio_threshold(ratio):
+# 	""" Sets the ratio of the nearest to the second nearest neighbor to consider the match a good one """
+# 	global matcher
+# 	matcher.ratio_threshold = ratio/100.0
 
-def mouse_event(event,x,y,flag,im):
-	""" Handles mouse events.  In this case when the user clicks, the matches are recomputed """
-	if event == cv2.EVENT_FLAG_LBUTTON:
-		matcher.compute_matches()
+# def mouse_event(event,x,y,flag,im):
+# 	""" Handles mouse events.  In this case when the user clicks, the matches are recomputed """
+# 	if event == cv2.EVENT_FLAG_LBUTTON:
+# 		matcher.compute_matches()
 
 if __name__ == '__main__':
 	# descriptor can be: SIFT, SURF, BRIEF, BRISK, ORB, FREAK
 	matcher = KeyPointMatcherDemo('frame0000.jpg','frame0001.jpg','SIFT')
-
-	# setup a basic UI
-	cv2.namedWindow('UI')
-	cv2.createTrackbar('Corner Threshold', 'UI', 0, 100, set_corner_threshold)
-	cv2.createTrackbar('Ratio Threshold', 'UI', 100, 100, set_ratio_threshold)
 	matcher.compute_matches()
 
-	cv2.imshow("MYWIN",matcher.im)
-	cv2.setMouseCallback("MYWIN",mouse_event,matcher)
+	# setup a basic UI
+	# cv2.namedWindow('UI')
+	# cv2.createTrackbar('Corner Threshold', 'UI', 0, 100, set_corner_threshold)
+	# cv2.createTrackbar('Ratio Threshold', 'UI', 100, 100, set_ratio_threshold)
+	# matcher.compute_matches()
+
+	# cv2.imshow("MYWIN",matcher.im)
+	# cv2.setMouseCallback("MYWIN",mouse_event,matcher)
 
 	while True:
-		cv2.imshow("MYWIN",matcher.im)
+		#cv2.imshow("MYWIN",matcher.im)
 		cv2.waitKey(50)
 	cv2.destroyAllWindows()
